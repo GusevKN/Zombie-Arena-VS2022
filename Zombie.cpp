@@ -5,6 +5,7 @@
 using namespace std;
 void Zombie::spawn(float startX, float startY, int type, int seed)
 {
+	m_Alive = true;
 	switch (type)
 	{
 	case 0:

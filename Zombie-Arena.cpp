@@ -197,6 +197,16 @@ int main()
 					state == State::GAME_OVER)
 				{
 					state = State::LEVELING_UP;
+					wave = 0;
+					score = 0;
+					// Подготавливаем оружие и патроны для новой игры
+					currentBullet = 0;
+					bulletsSpare = 24;
+					bulletsInClip = 6;
+					clipSize = 6;
+					fireRate = 1;
+					// Сбрасываем статистику игрока
+					player.resetPlayerStats();
 				}
 				if (state == State::PLAYING)
 				{
@@ -311,34 +321,48 @@ int main()
 			// Обработка повышения уровня игрока
 			if (event.key.code == Keyboard::Num1)
 			{
+				// Увеличиваем скорострельность
+				fireRate++;
 				state = State::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num2)
 			{
+				// Увеличиваем размер обоймы
+				clipSize += clipSize;
 				state = State::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num3)
 			{
+				// Увеличиваем показатели здоровья
+				player.upgradeHealth();
 				state = State::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num4)
 			{
+				// Увеличиваем скорость передвижения
+				player.upgradeSpeed();
 				state = State::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num5)
 			{
+				// Улучшаем аптечку
+				healthPickup.upgrade();
 				state = State::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num6)
 			{
+				// Улучшаем боеприпасы
+				ammoPickup.upgrade();
 				state = State::PLAYING;
 			}
 			if (state == State::PLAYING)
 			{
+				// Увеличиваем номер волны
+				wave++;
 				// Подготовка уровня
 				// Мы изменим следующие две строки позже
-				arena.width = 500;
-				arena.height = 500;
+				arena.width = 500 * wave;
+				arena.height = 500 * wave;
 				arena.left = 0;
 				arena.top = 0;
 				// Передаем массив вершин по ссылке
@@ -353,7 +377,7 @@ int main()
 				healthPickup.setArena(arena);
 				ammoPickup.setArena(arena);
 				// Создаем орду зомби
-				numZombies = 10;
+				numZombies = 5 * wave;
 				// Освобождаем ранее выделенную память (если она существует)
 				delete[] zombies;
 				zombies = createHorde(numZombies, arena);
