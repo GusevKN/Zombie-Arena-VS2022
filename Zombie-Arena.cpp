@@ -54,6 +54,8 @@ int main()
 	float fireRate = 1;
 	// Когда в последний раз была нажата кнопка выстрела?
 	Time lastPressed;
+	//Когда в последний раз был ранен игрок
+	Time lastTimeWounded;
 	// Скрываем указатель мыши и заменяем его прицелом
 	window.setMouseCursorVisible(false);
 	Sprite spriteCrosshair;
@@ -101,9 +103,9 @@ int main()
 	levelUpText.setFont(font);
 	levelUpText.setCharacterSize(80);
 	levelUpText.setFillColor(Color::White);
-	levelUpText.setPosition(150, 250);
+	levelUpText.setPosition(100, 50);
 	std::stringstream levelUpStream;
-	levelUpStream <<
+		levelUpStream <<
 		"1- Increased rate of fire" <<//Повышение скорострельности
 		"\n2- Increasing the clip size (on the next reload)" <<//Повышение размера обоймы (при следующей перезарядке)
 		"\n3- Increasing the maximum level of health" <<//Повышение максимального уровня здоровья
@@ -280,7 +282,7 @@ int main()
 			{
 				if (gameTimeTotal.asMilliseconds()
 					- lastPressed.asMilliseconds()
-					> 1000 / fireRate && bulletsInClip > 0)
+					> 500 / fireRate && bulletsInClip > 0)
 				{
 					// Передаем центр игрового персонажа и прицела в функцию shoot
 					bullets[currentBullet].shoot(
@@ -299,7 +301,7 @@ int main()
 			{
 				if (gameTimeTotal.asMilliseconds()
 					- lastPressed.asMilliseconds()
-					> 1000 / fireRate && bulletsInClip > 0)
+					> 500 / fireRate && bulletsInClip > 0)
 				{
 					// Передаем центр игрового персонажа и прицела в функцию shoot
 					bullets[currentBullet].shoot(
@@ -465,25 +467,31 @@ int main()
 					}
 				}
 			}// Конец обработки подстреленного зомби
-			/*// Был ли игрок задет зомби
+			// Был ли игрок задет зомби
 			for (int i = 0; i < numZombies; i++)
 			{
-				if (player.getPosition().intersects
-				(zombies[i].getPosition()) && zombies[i].isAlive())
-				{
-					if (player.hit(gameTimeTotal))
+				
+					if (player.getPosition().intersects
+					(zombies[i].getPosition()) && zombies[i].isAlive())
 					{
-						// Здесь будет больше кода позже
+						if (gameTimeTotal.asMilliseconds() - lastTimeWounded.asMilliseconds() > 400)
+						{
+							lastTimeWounded = gameTimeTotal;
+							if (player.hit(gameTimeTotal))
+							{
+								// Здесь будет больше кода позже
+
+							}
+							if (player.getHealth() <= 0)
+							{
+								state = State::GAME_OVER;
+								std::ofstream outputFile("gamedata/scores.txt");
+								// << Записываем данные
+								outputFile << hiScore;
+								outputFile.close();
+							}
+						}
 					}
-					if (player.getHealth() <= 0)
-					{
-						state = State::GAME_OVER;
-						std::ofstream outputFile("gamedata/scores.txt");
-						// << Записываем данные
-							outputFile << hiScore;
-						outputFile.close();
-					}
-				}
 			}// Конец обработки касания игрока*/
 			// Коснулся ли герой аптечки
 			if (player.getPosition().intersects
