@@ -468,10 +468,10 @@ int main()
 				}
 			}// Конец обработки подстреленного зомби
 			// Был ли игрок задет зомби
+			
 			for (int i = 0; i < numZombies; i++)
 			{
-				
-					if (player.getPosition().intersects
+				if (player.getPosition().intersects
 					(zombies[i].getPosition()) && zombies[i].isAlive())
 					{
 						if (gameTimeTotal.asMilliseconds() - lastTimeWounded.asMilliseconds() > 400)
@@ -554,6 +554,19 @@ int main()
 			{
 				window.draw(zombies[i].getSprite());
 			}
+			// Отрисовываем убитых зомби
+			for (int i = 0; i < numZombies; i++)
+			{
+				if(!zombies[i].isAlive())
+				window.draw(zombies[i].getSprite());
+			}
+			// Отрисовываем живых зомби
+			for (int i = 0; i < numZombies; i++)
+			{
+				if (zombies[i].isAlive())
+				window.draw(zombies[i].getSprite());
+			}
+			//Отрисовываем пули
 			for (int i = 0; i < 100; i++)
 			{
 				if (bullets[i].isInFlight())
