@@ -33,9 +33,9 @@ void Pickup::setArena(IntRect arena)
 void Pickup::spawn()
 {
 	// Генерация в случайном месте
-	srand((int)time(0) / m_Type);
+	//srand((int)time(0) / m_Type);
 	int x = (rand() % m_Arena.width);
-	srand((int)time(0) * m_Type);
+	//srand((int)time(0) * m_Type);
 	int y = (rand() % m_Arena.height);
 	m_SecondsSinceSpawn = 0;
 	m_Spawned = true;
@@ -79,7 +79,7 @@ void Pickup::update(float elapsedTime)
 	// Должен ли предмет появиться?
 	if (m_SecondsSinceDeSpawn > m_SecondsToWait && !m_Spawned)
 	{
-		// Генерируем предмет и сбрасываем таймер
+		// Генерируем предмет и сбрасываем таймеры
 		spawn();
 	}
 }
@@ -91,7 +91,9 @@ void Pickup::upgrade()
 	}
 	else
 	{
-		m_Value += (AMMO_START_VALUE * .5);
+		srand((int)time(0) * m_Type);
+		m_Value += (rand() % AMMO_START_VALUE);
+		//m_Value += (AMMO_START_VALUE * .5);
 	}
 	// Предметы появляюся чаще и "живут" дольше
 	m_SecondsToLive += (START_SECONDS_TO_LIVE / 10);

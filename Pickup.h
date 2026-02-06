@@ -5,10 +5,10 @@ class Pickup
 {
 private:
 	// Начальное значение для предмета
-	const int HEALTH_START_VALUE = 50;
-	const int AMMO_START_VALUE = 12;
-	const int START_WAIT_TIME = 10;
-	const int START_SECONDS_TO_LIVE = 5;
+	static const int HEALTH_START_VALUE = 50;
+	static const int AMMO_START_VALUE = 12;
+	static const int START_WAIT_TIME = 10;
+	static const int START_SECONDS_TO_LIVE = 5;
 	// Спрайт, представляющий этот предмет
 	Sprite m_Sprite;
 	// Арена, на которой существует предмет

@@ -6,6 +6,8 @@
 #include "TextureHolder.h"
 #include "Bullet.h"
 #include "Pickup.h"
+#include "vector"
+using namespace std;
 using namespace sf;
 int main()
 {
@@ -64,7 +66,8 @@ int main()
 	spriteCrosshair.setOrigin(25, 25);
 	// Создаем пару бонусных предметов
 	Pickup healthPickup(1);
-	Pickup ammoPickup(2);
+	vector<Pickup> ammoPickup = { 2 };
+	//Pickup ammoPickup(2);
 	// Об игре
 	int score = 0;
 	int hiScore = 0;
@@ -151,6 +154,7 @@ int main()
 	zombiesRemainingText.setString("Zombies: 100");
 	// Номер волны
 	int wave = 0;
+	int wave2 = 1;
 	Text waveNumberText;
 	waveNumberText.setFont(font);
 	waveNumberText.setCharacterSize(55);
@@ -354,13 +358,21 @@ int main()
 			if (event.key.code == Keyboard::Num6)
 			{
 				// Улучшаем боеприпасы
-				ammoPickup.upgrade();
+				ammoPickup.push_back(2);
+				for (int i = 0; i < ammoPickup.size(); i++)
+				{
+					ammoPickup[i].upgrade();
+				}
 				state = State::PLAYING;
 			}
 			if (state == State::PLAYING)
 			{
 				// Увеличиваем номер волны
 				wave++;
+				if (wave != wave2) {
+					ammoPickup.push_back(2);
+					wave2 = wave;
+				}
 				// Подготовка уровня
 				// Мы изменим следующие две строки позже
 				arena.width = 500 * wave;
@@ -377,9 +389,11 @@ int main()
 				player.spawn(arena, resolution, tileSize);
 				// Настраиваем предметы
 				healthPickup.setArena(arena);
-				ammoPickup.setArena(arena);
+				for (int i = 0; i < ammoPickup.size(); i++)
+				ammoPickup[i].setArena(arena);
+				//ammoPickup.setArena(arena);
 				// Создаем орду зомби
-				numZombies = 5 * wave;
+				numZombies = 10 * wave;
 				// Освобождаем ранее выделенную память (если она существует)
 				delete[] zombies;
 				zombies = createHorde(numZombies, arena);
@@ -433,7 +447,9 @@ int main()
 			}
 			// Обновляем бонусные предметы
 			healthPickup.update(dtAsSeconds);
-			ammoPickup.update(dtAsSeconds);
+			for (int i = 0; i < ammoPickup.size(); i++)
+			ammoPickup[i].update(dtAsSeconds);
+			//ammoPickup.update(dtAsSeconds);
 			// Обнаружение коллизий
 // Был ли зомби подстрелен?
 			for (int i = 0; i < 100; i++)
@@ -500,12 +516,15 @@ int main()
 				player.increaseHealthLevel(healthPickup.gotIt());
 			}
 			// Коснулся ли герой боеприпасов
-			if (player.getPosition().intersects
-			(ammoPickup.getPosition()) && ammoPickup.isSpawned())
+			for (int i = 0; i < ammoPickup.size(); i++)
 			{
-				bulletsSpare += ammoPickup.gotIt();
+				if (player.getPosition().intersects
+				(ammoPickup[i].getPosition()) && ammoPickup[i].isSpawned())
+				{
+					bulletsSpare += ammoPickup[i].gotIt();
+				}
 			}
-			// Изменяем размер шкалы здоровья
+			// Изменяем размер шкалы здоровья*/
 			healthBar.setSize(Vector2f(player.getHealth() * 3, 50));
 			// Увеличиваем количество кадров с момента последнего обновления
 			framesSinceLastHUDUpdate++;
@@ -577,9 +596,12 @@ int main()
 			// Отрисовываем игрового персонажа
 			window.draw(player.getSprite());
 			// Отрисовываем предметы, если они сгенерированы
-			if (ammoPickup.isSpawned())
+			for (int i = 0; i < ammoPickup.size(); i++)
 			{
-				window.draw(ammoPickup.getSprite());
+				if (ammoPickup[i].isSpawned())
+				{
+					window.draw(ammoPickup[i].getSprite());
+				}//*/
 			}
 			if (healthPickup.isSpawned())
 			{
