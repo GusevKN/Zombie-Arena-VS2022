@@ -205,6 +205,8 @@ int main()
 					state = State::LEVELING_UP;
 					wave = 0;
 					score = 0;
+					ammoPickup.clear();
+					ammoPickup.push_back(2);
 					// Подготавливаем оружие и патроны для новой игры
 					currentBullet = 0;
 					bulletsSpare = 24;
@@ -393,7 +395,14 @@ int main()
 				ammoPickup[i].setArena(arena);
 				//ammoPickup.setArena(arena);
 				// Создаем орду зомби
-				numZombies = 10 * wave;
+				if (wave == 1)
+				{
+					numZombies = 5;
+				}
+				else
+				{
+					numZombies = 10 * wave;
+				}
 				// Освобождаем ранее выделенную память (если она существует)
 				delete[] zombies;
 				zombies = createHorde(numZombies, arena);
