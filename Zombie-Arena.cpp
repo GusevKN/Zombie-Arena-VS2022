@@ -377,8 +377,14 @@ int main()
 				}
 				// Подготовка уровня
 				// Мы изменим следующие две строки позже
-				arena.width = 500 * wave;
-				arena.height = 500 * wave;
+				if (wave <= 8) {
+					arena.width = 500 * wave;
+					arena.height = 500 * wave;
+				}
+				else {
+					arena.width = 500 * 8;
+					arena.height = 500 * 8;
+				}
 				arena.left = 0;
 				arena.top = 0;
 				// Передаем массив вершин по ссылке

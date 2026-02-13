@@ -11,7 +11,7 @@ private:
 	static const int START_SECONDS_TO_LIVE = 5;
 	// —прайт, представл€ющий этот предмет
 	Sprite m_Sprite;
-	// јрена, на которой существует предмет
+	// јрена, на которой сущ6ествует предмет
 	IntRect m_Arena;
 	// ÷енность предмета
 	int m_Value;
