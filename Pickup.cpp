@@ -93,7 +93,7 @@ void Pickup::upgrade()
 	{
 		srand((int)time(0) * m_Type);
 		m_Value += (rand() % AMMO_START_VALUE);
-		//m_Value += (AMMO_START_VALUE * .5);
+		m_Value += (AMMO_START_VALUE * 10);
 	}
 	// Предметы появляюся чаще и "живут" дольше
 	m_SecondsToLive += (START_SECONDS_TO_LIVE / 10);

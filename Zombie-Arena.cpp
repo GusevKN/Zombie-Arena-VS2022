@@ -67,7 +67,6 @@ int main()
 	// Создаем пару бонусных предметов
 	Pickup healthPickup(1);
 	vector<Pickup> ammoPickup = { 2 };
-	//Pickup ammoPickup(2);
 	// Об игре
 	int score = 0;
 	int hiScore = 0;
@@ -206,6 +205,14 @@ int main()
 					wave = 0;
 					score = 0;
 					ammoPickup.clear();
+					ammoPickup.push_back(2);
+					ammoPickup.push_back(2);
+					ammoPickup.push_back(2);
+					ammoPickup.push_back(2);
+					ammoPickup.push_back(2);
+					ammoPickup.push_back(2);
+					ammoPickup.push_back(2);
+					ammoPickup.push_back(2);
 					ammoPickup.push_back(2);
 					// Подготавливаем оружие и патроны для новой игры
 					currentBullet = 0;
